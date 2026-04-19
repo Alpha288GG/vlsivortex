@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Tech Vortex — Chh Shahu College of Engineering</title>
+<meta name="description" content="National Level Technical Symposium by Electronics Engineering (VLSI Design & Technology) Dept. Oct 15–16, 2026."/>
+<link rel="stylesheet" href="css/design.css"/>
+</head>
+<body>
+
+<!-- Three.js canvas -->
+<canvas id="bg-canvas"></canvas>
+<!-- Ambient glow layers -->
+<div class="glow-bg"></div>
+
+<div class="site-wrapper">
+
+<!-- ══════════════ NAVBAR ══════════════ -->
+<nav class="nav" role="navigation" aria-label="Main navigation">
+    <a href="index.html" class="nav-brand">
+        <div class="nav-brand-icon"><img src="assets/images/college/logovortex.jpeg" alt="Logo"></div>
+        <div class="nav-brand-text">
+            <span class="nav-brand-title">Tech Vortex </span>
+            <span class="nav-brand-sub">CSMSS CSCOE</span>
+        </div>
+    </a>
+    <div class="nav-links">
+        <a href="index.html" class="nav-link active">Home</a>
+        <a href="about.html" class="nav-link">About</a>
+        <a href="competitions.html" class="nav-link">Events</a>
+        <a href="schedule.html" class="nav-link">Schedule</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+    </div>
+    <div class="nav-cta">
+        <a href="#events-section" class="btn btn-gold btn-sm">Register Now</a>
+    </div>
+    <button class="nav-mobile-btn" id="mobile-menu-btn" aria-label="Toggle menu">☰</button>
+</nav>
+
+<!-- Mobile menu -->
+<div id="mobile-menu" role="navigation" aria-label="Mobile navigation">
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="competitions.html">Events</a>
+    <a href="schedule.html">Schedule</a>
+    <a href="contact.html">Contact</a>
+    <a href="#events-section" class="btn btn-gold" style="margin-top:12px; justify-content:center;">Register Now</a>
+</div>
+
+<!-- ══════════════ HERO ══════════════ -->
+<section class="hero" style="min-height: 100vh; display:flex; align-items:center; padding-top:120px; padding-bottom:60px;">
+<div class="container">
+    <div style="max-width:700px;">
+        <div style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:40px;" data-reveal data-delay="0">
+            <span class="tag">3 April 2026</span>
+            <span class="tag">National Level Symposium</span>
+        </div>
+
+        <div data-reveal data-delay="50" style="margin-bottom: 12px;">
+            <p style="font-size: 10px; font-family: var(--font-mono); color: var(--creamy-blue); text-transform: uppercase; letter-spacing: 0.2em; margin-bottom: 4px; opacity: 0.9;">Design & Developed by Swapnil Shinde</p>
+            <p class="label" style="margin-bottom:0;">
+                Chh. Shahu College of Engineering — Electronics Engg VLSI Design & Tech department —
+            </p>
+        </div>
+
+        <h1 class="heading-xl" data-reveal data-delay="150" style="margin-bottom:32px; letter-spacing:-0.02em;">
+            <span class="gradient-text">TECH</span><br/>
+            <span style="color:var(--text);">VORTEX <span style="font-family:var(--font-body); font-size:0.55em; font-weight:500; color:var(--creamy-blue); margin-left:8px; vertical-align:middle; letter-spacing:0.02em;">2K26</span></span>
+        </h1>
+
+        <p data-reveal data-delay="250" style="font-size:1.1rem; color:var(--text-muted); max-width:520px; line-height:1.7; margin-bottom:48px;">
+            Chh. Shahu College of Engineering presents its annual national-level technical symposium. 1 day of competition, innovation, and engineering excellence.
+        </p>
+
+        <div data-reveal data-delay="350" style="display:flex; gap:14px; flex-wrap:wrap; align-items:center;">
+            <a href="competitions.html" class="btn btn-gold">
+                Explore Events
+                <span style="font-size:18px;">→</span>
+            </a>
+            <a href="#events-section" class="btn btn-outline">Register Now</a>
+            <a href="schedule.html" class="btn btn-outline">View Schedule ↗</a>
+        </div>
+
+        <!-- Countdown -->
+        <div data-reveal data-delay="450" style="display:flex; gap:clamp(12px, 3vw, 32px); margin-top:64px; padding-top:40px; border-top:1px solid var(--border); align-items:center;">
+            <div style="text-align:center;">
+                <div id="days" style="font-size:clamp(1.8rem, 7vw, 2.5rem); font-weight:700; color:var(--creamy-blue); font-family:var(--font-mono); line-height:1;">00</div>
+                <div style="font-size:clamp(9px, 3vw, 11px); letter-spacing:0.05em; text-transform:uppercase; color:var(--text-muted); margin-top:4px; font-family:var(--font-mono);">Days</div>
+            </div>
+            <div style="color:var(--border); font-size:clamp(1.2rem, 4vw, 2rem); margin-top:-14px;">:</div>
+            <div style="text-align:center;">
+                <div id="hours" style="font-size:clamp(1.8rem, 7vw, 2.5rem); font-weight:700; color:var(--creamy-blue); font-family:var(--font-mono); line-height:1;">00</div>
+                <div style="font-size:clamp(9px, 3vw, 11px); letter-spacing:0.05em; text-transform:uppercase; color:var(--text-muted); margin-top:4px; font-family:var(--font-mono);">Hours</div>
+            </div>
+            <div style="color:var(--border); font-size:clamp(1.2rem, 4vw, 2rem); margin-top:-14px;">:</div>
+            <div style="text-align:center;">
+                <div id="minutes" style="font-size:clamp(1.8rem, 7vw, 2.5rem); font-weight:700; color:var(--creamy-blue); font-family:var(--font-mono); line-height:1;">00</div>
+                <div style="font-size:clamp(9px, 3vw, 11px); letter-spacing:0.05em; text-transform:uppercase; color:var(--text-muted); margin-top:4px; font-family:var(--font-mono);">Minutes</div>
+            </div>
+            <div style="color:var(--border); font-size:clamp(1.2rem, 4vw, 2rem); margin-top:-14px;">:</div>
+            <div style="text-align:center;">
+                <div id="seconds" style="font-size:clamp(1.8rem, 7vw, 2.5rem); font-weight:700; color:var(--creamy-blue); font-family:var(--font-mono); line-height:1;">00</div>
+                <div style="font-size:clamp(9px, 3vw, 11px); letter-spacing:0.05em; text-transform:uppercase; color:var(--text-muted); margin-top:4px; font-family:var(--font-mono);">Seconds</div>
+            </div>
+        </div>
+    </div>
+</div>
+</section>
+
+<!-- ══════════════ TICKER ══════════════ -->
+<div style="border-top:1px solid var(--border); border-bottom:1px solid var(--border); padding:14px 0; overflow:hidden; background:rgba(0,0,0,0.3);">
+    <div class="ticker" role="note" aria-label="Announcements ticker">
+        <div class="ticker__track" style="font-family:var(--font-mono); font-size:11.5px; letter-spacing:0.13em; color:var(--creamy-blue);">
+            <span style="padding:0 28px;">◆ REGISTRATIONS OPEN</span>
+            <span style="padding:0 28px;">◆ EVENT DATE: 3 APRIL 2026</span>
+            <span style="padding:0 28px;">◆ EXCITING CASH PRIZES</span>
+            <span style="padding:0 28px;">◆ HARDWARE HACKATHON</span>
+            <span style="padding:0 28px;">◆ 500+ EXPECTED PARTICIPANTS</span>
+            <span style="padding:0 28px;">◆ TECH VORTEX 2K26</span>
+            <span style="padding:0 28px;">◆ CHH. SHAHU COLLEGE OF ENGINEERING</span>
+        </div>
+        <div class="ticker__track" aria-hidden="true" style="font-family:var(--font-mono); font-size:11.5px; letter-spacing:0.13em; color:var(--creamy-blue);">
+            <span style="padding:0 28px;">◆ REGISTRATIONS OPEN</span>
+            <span style="padding:0 28px;">◆ EVENT DATE: 3 APRIL 2026</span>
+            <span style="padding:0 28px;">◆ EXCITING CASH PRIZES</span>
+            <span style="padding:0 28px;">◆ HARDWARE HACKATHON</span>
+            <span style="padding:0 28px;">◆ 500+ EXPECTED PARTICIPANTS</span>
+            <span style="padding:0 28px;">◆ TECH VORTEX 2K26</span>
+            <span style="padding:0 28px;">◆ CHH. SHAHU COLLEGE OF ENGINEERING</span>
+        </div>
+    </div>
+</div>
+
+
+<!-- ══════════════ EVENTS ══════════════ -->
+<section class="section" style="position:relative;" id="events-section">
+<div style="position:absolute; top:10%; left:50%; transform:translate(-50%, 0); width:100vw; height:600px; background:radial-gradient(circle, rgba(184, 212, 232, 0.06) 0%, transparent 60%); pointer-events:none; z-index:0;"></div>
+<div class="container" style="position:relative; z-index:1;">
+    <div data-reveal style="margin-bottom:60px; text-align:center;">
+        <p class="label" style="justify-content:center; margin-bottom:16px;">Main Competitions</p>
+        <div class="gold-line" style="margin:0 auto 32px;"></div>
+        <h2 class="heading-xl gradient-text" style="margin-bottom:24px; text-shadow: 0 4px 32px rgba(184, 212, 232, 0.3);">Events &amp;<br/>Challenges</h2>
+        <a href="competitions.html" class="btn btn-gold btn-lg" style="box-shadow: 0 0 20px rgba(184,212,232,0.2);">View All Events →</a>
+    </div>
+
+    <div class="grid-2" style="gap:20px;">
+        <!-- Event 1 -->
+        <div class="glass-card glass-card-lg" data-reveal data-tilt style="text-decoration:none;">
+            <div class="corner-ribbon">₹100 FEE</div>
+            <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:28px;">
+                <span class="tag">Coding</span>
+                <span style="font-family:var(--font-mono); font-size:12px; color:var(--text-dim);">01</span>
+            </div>
+            <div class="gold-line"></div>
+            <h3 class="heading-sm" style="margin-bottom:14px;">Coding Challenge</h3>
+            <p style="color:var(--text-muted); font-size:14px; line-height:1.6; margin-bottom:28px;">Pure Python based competition will have 2 stages , Stage 1 (will include python based MCQ to test basic concepts) Stage 2 ( Qualifed Participants will move to stage 2, Where they will solve problem statements using coding and logic).</p>
+            <div style="display:flex; justify-content:space-between; align-items:center; padding-top:20px; border-top:1px solid var(--border);">
+                <div>
+                    <div style="font-size:11px; font-family:var(--font-mono); color:var(--text-dim); letter-spacing:0.08em; margin-bottom:4px;">AWARDS</div>
+                    <div style="font-size:14px; font-weight:600; color:var(--creamy-blue);">Prize Pool +<br>Participation Certificates</div>
+                </div>
+                <div style="text-align:right;">
+                    <a href="registration.html?event=coding" class="btn btn-gold btn-lg" style="box-shadow: 0 0 15px rgba(184, 212, 232, 0.4); border-width: 2px;">Register →</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Event 2 -->
+        <div class="glass-card glass-card-lg" data-reveal data-delay="100" data-tilt style="text-decoration:none;">
+            <div class="corner-ribbon">₹100 FEE</div>
+            <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:28px;">
+                <span class="tag">AI</span>
+                <span style="font-family:var(--font-mono); font-size:12px; color:var(--text-dim);">02</span>
+            </div>
+            <div class="gold-line"></div>
+            <h3 class="heading-sm" style="margin-bottom:14px;">Gen-AI Model Building</h3>
+            <p style="color:var(--text-muted); font-size:14px; line-height:1.6; margin-bottom:28px;">
+                In this Generative AI Competition, participants will create a website using AI tools like ChatGPT or Gemini. They will
+                generate HTML,CSS, and JavaScript code through prompts, build the website using an online platform and publish it.
+                Participants must submit both the prompt used and the live website link through the Google Form.
+                The competition focuses on creativity, prompt-writing skills, and building a visually appealing, user-friendly website.
+            </p>
+            <div style="display:flex; justify-content:space-between; align-items:center; padding-top:20px; border-top:1px solid var(--border);">
+                <div>
+                    <div style="font-size:11px; font-family:var(--font-mono); color:var(--text-dim); letter-spacing:0.08em; margin-bottom:4px;">AWARDS</div>
+                    <div style="font-size:14px; font-weight:600; color:var(--creamy-blue);">Prize Pool +<br>Participation Certificates</div>
+                </div>
+                <div style="text-align:right;">
+                    <a href="registration.html?event=genai" class="btn btn-gold btn-lg" style="box-shadow: 0 0 15px rgba(184, 212, 232, 0.4); border-width: 2px;">Register →</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Event 3 -->
+        <div class="glass-card glass-card-lg" data-reveal data-delay="200" data-tilt style="text-decoration:none;">
+            <div class="corner-ribbon">₹100 FEE</div>
+            <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:28px;">
+                <span class="tag">Hardware</span>
+                <span style="font-family:var(--font-mono); font-size:12px; color:var(--text-dim);">03</span>
+            </div>
+            <div class="gold-line"></div>
+            <h3 class="heading-sm" style="margin-bottom:14px;">Circuit Making / Model Designing</h3>
+            <p style="color:var(--text-muted); font-size:12px; line-height:1.5; margin-bottom:16px;">
+                <b class="text-blue">⚡ Hardware — Circuit Making:</b> MCQ Quiz → Build → Presentation. Focus on electronic design.
+            </p>
+            <p style="color:var(--text-muted); font-size:12px; line-height:1.5; margin-bottom:28px;">
+                <b class="text-blue">📐 Software — Model Designing:</b> Domain Quiz → AutoCAD Challenge → Presentation. For Civil/Mechanical concepts.
+            </p>
+            <div style="display:flex; justify-content:space-between; align-items:center; padding-top:20px; border-top:1px solid var(--border);">
+                <div>
+                    <div style="font-size:11px; font-family:var(--font-mono); color:var(--text-dim); letter-spacing:0.08em; margin-bottom:4px;">AWARDS</div>
+                    <div style="font-size:14px; font-weight:600; color:var(--creamy-blue);">Prize Pool +<br>Participation Certificates</div>
+                </div>
+                <div style="text-align:right;">
+                    <a href="registration.html?event=circuit" class="btn btn-gold btn-lg" style="box-shadow: 0 0 15px rgba(184, 212, 232, 0.4); border-width: 2px;">Register →</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Event 4 -->
+        <div class="glass-card glass-card-lg" data-reveal data-delay="300" data-tilt style="text-decoration:none;">
+            <div class="corner-ribbon">₹100 FEE</div>
+            <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:28px;">
+                <span class="tag">Ideathon</span>
+                <span style="font-family:var(--font-mono); font-size:12px; color:var(--text-dim);">04</span>
+            </div>
+            <div class="gold-line"></div>
+            <h3 class="heading-sm" style="margin-bottom:14px;">Ideathon</h3>
+            <p style="color:var(--text-muted); font-size:14px; line-height:1.6; margin-bottom:28px;">The Poster and Paper Presentation Competition showcases creativity, innovation, and research skills. In the Poster Competition, participants are given a topic on the spot and create a poster to present their ideas. In the Paper Presentation, participants present their pre-prepared research papers using a screen, showcasing their creativity while explaining their work clearly to the judges Think big innovative smart</p>
+            <div style="display:flex; justify-content:space-between; align-items:center; padding-top:20px; border-top:1px solid var(--border);">
+                <div>
+                    <div style="font-size:11px; font-family:var(--font-mono); color:var(--text-dim); letter-spacing:0.08em; margin-bottom:4px;">AWARDS</div>
+                    <div style="font-size:14px; font-weight:600; color:var(--creamy-blue);">Prize Pool +<br>Participation Certificates</div>
+                </div>
+                <div style="text-align:right;">
+                    <a href="registration.html?event=poster" class="btn btn-gold btn-lg" style="box-shadow: 0 0 15px rgba(184, 212, 232, 0.4); border-width: 2px;">Register →</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</section>
+
+<!-- ══════════════ STATS ══════════════ -->
+<section class="section" style="padding-top:0;">
+<div class="container">
+    <div class="grid-4" style="gap:16px;">
+        <div class="glass-card" data-reveal data-tilt style="text-align:center;">
+            <div style="font-size:3rem; font-weight:700; color:var(--creamy-blue); font-family:var(--font-mono); line-height:1; margin-bottom:10px;">
+                <span data-counter="4" data-suffix="+">4+</span>
+            </div>
+            <div style="font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-muted); font-family:var(--font-mono);">Core Events</div>
+        </div>
+        <div class="glass-card" data-reveal data-delay="100" data-tilt style="text-align:center;">
+            <div style="font-size:3rem; font-weight:700; color:var(--creamy-blue); font-family:var(--font-mono); line-height:1; margin-bottom:10px;">
+                <span data-counter="50" data-suffix="+">50+</span>
+            </div>
+            <div style="font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-muted); font-family:var(--font-mono);">Participating Colleges</div>
+        </div>
+        <div class="glass-card" data-reveal data-delay="200" data-tilt style="text-align:center;">
+            <div style="font-size:3rem; font-weight:700; color:var(--creamy-blue); font-family:var(--font-mono); line-height:1; margin-bottom:10px;">
+                <span data-counter="500" data-suffix="+">500+</span>
+            </div>
+            <div style="font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-muted); font-family:var(--font-mono);">Participants</div>
+        </div>
+        <div class="glass-card" data-reveal data-delay="300" data-tilt style="text-align:center;">
+            <div style="font-size:3rem; font-weight:700; color:var(--creamy-blue); font-family:var(--font-mono); line-height:1; margin-bottom:10px;">
+                <span>1 Day</span>
+            </div>
+            <div style="font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:var(--text-muted); font-family:var(--font-mono);">of Competition</div>
+        </div>
+    </div>
+</div>
+</section>
+
+<!-- ══════════════ ABOUT STRIP ══════════════ -->
+<section class="section" style="padding-top:0;">
+<div class="container">
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center;" class="about-grid">
+        <div data-reveal="left">
+            <p class="label" style="margin-bottom:16px;">About The Department</p>
+            <div class="gold-line"></div>
+            <h2 class="heading-lg" style="margin-bottom:24px;">VLSI Design<br/>&amp; Technology</h2>
+            <p style="color:var(--text-muted); line-height:1.8; margin-bottom:32px;">The Department of Electronics Engineering specializes in VLSI Design &amp; Technology at Chh. Shahu College of Engineering. We shape the engineers who design the chips that power tomorrow.</p>
+            <a href="about.html" class="btn btn-outline">Learn More About Us →</a>
+        </div>
+        <div data-reveal="right" style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+            <div class="glass-card" style="padding:20px;">
+                <div style="font-size:22px; margin-bottom:10px;">⚡</div>
+                <h4 style="font-size:14px; font-weight:600; margin-bottom:6px;">VLSI Design</h4>
+                <p style="font-size:12px; color:var(--text-muted);">RTL, synthesis &amp; EDA tools</p>
+            </div>
+            <div class="glass-card" style="padding:20px;">
+                <div style="font-size:22px; margin-bottom:10px;">🔌</div>
+                <h4 style="font-size:14px; font-weight:600; margin-bottom:6px;">Embedded Systems</h4>
+                <p style="font-size:12px; color:var(--text-muted);">MCU, RTOS &amp; IoT</p>
+            </div>
+            <div class="glass-card" style="padding:20px;">
+                <div style="font-size:22px; margin-bottom:10px;">🧠</div>
+                <h4 style="font-size:14px; font-weight:600; margin-bottom:6px;">AI &amp; Edge</h4>
+                <p style="font-size:12px; color:var(--text-muted);">TinyML &amp; neuromorphic</p>
+            </div>
+            <div class="glass-card" style="padding:20px;">
+                <div style="font-size:22px; margin-bottom:10px;">📡</div>
+                <h4 style="font-size:14px; font-weight:600; margin-bottom:6px;">Signal Processing</h4>
+                <p style="font-size:12px; color:var(--text-muted);">DSP, filters &amp; comms</p>
+            </div>
+        </div>
+    </div>
+</div>
+</section>
+
+<!-- ══════════════ LEADERSHIP ══════════════ -->
+<section class="section" style="padding-top:0;">
+<div class="container">
+    <div data-reveal style="margin-bottom:48px; text-align:center;">
+        <p class="label" style="margin-bottom:16px;">Leadership &amp; Team</p>
+        <div class="gold-line" style="margin: 0 auto;"></div>
+        <h2 class="heading-lg">Meet The Visionaries</h2>
+    </div>
+
+    <div class="grid-3" style="gap:24px; margin-bottom: 40px;">
+        <!-- Principal -->
+        <div class="glass-card" data-reveal data-tilt style="text-align:center; padding:32px 20px;">
+            <div style="width:120px; height:120px; border-radius:50%; margin:0 auto 20px; overflow:hidden; border:2px solid var(--creamy-blue); background:rgba(255,255,255,0.05);">
+                <img src="assets/images/department/principal.jpeg" alt="Principal" style="width:100%; height:100%; object-fit:cover;" onerror="this.onerror=null; this.parentNode.innerHTML='<div style=font-size:40px;line-height:120px;text-align:center;>👤</div>'">
+            </div>
+            <h3 style="font-size:18px; font-weight:700; margin-bottom:8px;">Dr. G B Dongre</h3>
+            <p style="font-size:13px; color:var(--text-muted);">Principal</p>
+        </div>
+        <!-- Vice Principal -->
+        <div class="glass-card" data-reveal data-delay="100" data-tilt style="text-align:center; padding:32px 20px;">
+            <div style="width:120px; height:120px; border-radius:50%; margin:0 auto 20px; overflow:hidden; border:2px solid var(--creamy-blue); background:rgba(255,255,255,0.05);">
+                <img src="assets/images/department/vice_principal.jpeg" alt="Vice Principal" style="width:100%; height:100%; object-fit:cover;" onerror="this.onerror=null; this.parentNode.innerHTML='<div style=font-size:40px;line-height:120px;text-align:center;>👤</div>'">
+            </div>
+            <h3 style="font-size:18px; font-weight:700; margin-bottom:8px;">Dr. D L Bhuyar</h3>
+            <p style="font-size:13px; color:var(--text-muted);">Vice Principal</p>
+        </div>
+        <!-- HOD -->
+        <div class="glass-card" data-reveal data-delay="200" data-tilt style="text-align:center; padding:32px 20px;">
+            <div style="width:120px; height:120px; border-radius:50%; margin:0 auto 20px; overflow:hidden; border:2px solid var(--creamy-blue); background:rgba(255,255,255,0.05);">
+                <img src="assets/images/department/hod.jpeg" alt="HOD" style="width:100%; height:100%; object-fit:cover;" onerror="this.onerror=null; this.parentNode.innerHTML='<div style=font-size:40px;line-height:120px;text-align:center;>👤</div>'">
+            </div>
+            <h3 style="font-size:18px; font-weight:700; margin-bottom:8px;">Dr. S J Honade</h3>
+            <p style="font-size:13px; color:var(--text-muted);">HOD of EE (VLSI Design & Technology)</p>
+        </div>
+    </div>
+
+    <!-- Faculty & Student Coordinators -->
+    <div class="grid-2" style="gap:24px;">
+        <div class="glass-card" data-reveal data-delay="0" style="padding: 24px;">
+            <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px;">
+                <div style="font-size:24px;">👨‍🏫</div>
+                <h3 style="font-size:16px; font-weight:700; color:var(--creamy-blue);">Faculty Co-ordinators</h3>
+            </div>
+            <ul style="color:var(--text-muted); font-size:14px; line-height:1.8; list-style-type:none; padding:0;">
+                <li><span style="color:var(--gold); font-weight:600; margin-right:8px;">1.</span> Mrs. K. B. Dandge</li>
+                <li><span style="color:var(--gold); font-weight:600; margin-right:8px;">2.</span> Mr. T. A. Mohije</li>
+            </ul>
+        </div>
+        <div class="glass-card" data-reveal data-delay="100" style="padding: 24px;">
+            <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px;">
+                <div style="font-size:24px;">🎓</div>
+                <h3 style="font-size:16px; font-weight:700; color:var(--creamy-blue);">Student Head Co-ordinators</h3>
+            </div>
+            <ul style="color:var(--text-muted); font-size:14px; line-height:1.8; list-style-type:none; padding:0;">
+                <li><span style="color:var(--gold); font-weight:600; margin-right:8px;">1.</span> Devika Bodkhe (President @SAVE)</li>
+                <li><span style="color:var(--gold); font-weight:600; margin-right:8px;">2.</span> Rutuja Jagtap (President @Club)</li>
+                <li><span style="color:var(--gold); font-weight:600; margin-right:8px;">3.</span> Prasad Desale (Chairperson @ISTE)</li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+</section>
+
+<!-- ══════════════ CTA ══════════════ -->
+<section class="section" style="padding-top:0;">
+<div class="container">
+    <div class="glass-card glass-card-lg" data-reveal style="text-align:center; padding:80px 40px; background:linear-gradient(135deg, rgba(201,162,39,0.08) 0%, rgba(0,0,0,0) 100%); border-color:var(--border-gold);">
+        <p class="label" style="justify-content:center; margin-bottom:20px;">Limited Spots Available</p>
+        <h2 class="heading-lg gradient-text" style="margin-bottom:20px;">Join the Legacy of<br/>Engineering Excellence</h2>
+        <p style="color:var(--text-muted); max-width:500px; margin:0 auto 40px; font-size:1rem; line-height:1.7;">Register now to secure your place in Tech Vortex. Open to all engineering colleges across India.</p>
+        <div style="display:flex; gap:14px; justify-content:center; flex-wrap:wrap;">
+            <a href="#events-section" class="btn btn-gold" style="padding:16px 40px; font-size:14px;">Register Now →</a>
+            <a href="contact.html" class="btn btn-outline">Get In Touch</a>
+        </div>
+    </div>
+</div>
+</section>
+
+<!-- ══════════════ FOOTER ══════════════ -->
+<footer class="footer">
+<div class="container">
+    <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:40px; flex-wrap:wrap; margin-bottom:40px;">
+        <div style="max-width:280px;">
+            <div style="display:flex; align-items:center; gap:10px; margin-bottom:16px;">
+                <div class="nav-brand-icon"><img src="assets/images/college/logovortex.jpeg" alt="Logo"></div>
+                <div>
+                    <div style="font-size:14px; font-weight:700; color:var(--text);">Tech Vortex</div>
+                    <div style="font-size:10px; font-family:var(--font-mono); color:var(--text-muted);">CHH SHAHU COLLEGE</div>
+                </div>
+            </div>
+            <p style="font-size:13px; color:var(--text-muted); line-height:1.6;">Electronics Engineering (VLSI Design &amp; Technology) Department Annual Technical Symposium.</p>
+        </div>
+        <div style="display:flex; gap:60px; flex-wrap:wrap;">
+            <div>
+                <div style="font-size:11px; font-family:var(--font-mono); letter-spacing:0.1em; color:var(--text-dim); text-transform:uppercase; margin-bottom:16px;">Quick Links</div>
+                <div style="display:flex; flex-direction:column; gap:10px;">
+                    <a href="about.html" style="font-size:13px; color:var(--text-muted); transition:var(--transition);" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">About Department</a>
+                    <a href="competitions.html" style="font-size:13px; color:var(--text-muted); transition:var(--transition);" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">All Events</a>
+                    <a href="schedule.html" style="font-size:13px; color:var(--text-muted); transition:var(--transition);" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">Schedule</a>
+                    <a href="rules.html" style="font-size:13px; color:var(--text-muted); transition:var(--transition);" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">Rules</a>
+                </div>
+            </div>
+            <div>
+                <div style="font-size:11px; font-family:var(--font-mono); letter-spacing:0.1em; color:var(--text-dim); text-transform:uppercase; margin-bottom:16px;">Participate</div>
+                <div style="display:flex; flex-direction:column; gap:10px;">
+                    <a href="#events-section" style="font-size:13px; color:var(--text-muted); transition:var(--transition);" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">Register Now</a>
+                    <a href="contact.html" style="font-size:13px; color:var(--text-muted); transition:var(--transition);" onmouseover="this.style.color='var(--gold)'" onmouseout="this.style.color='var(--text-muted)'">Contact Us</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="padding-top:24px; border-top:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+        <p style="font-size:12px; font-family:var(--font-mono); color:var(--text-dim);">© 2026 Tech VORTEX. Chh. Shahu College of Engineering. All rights reserved. · <a href="admin.html" style="color:inherit;text-decoration:none;">Admin</a><br><a href="https://sscodehub.in" target="_blank" style="text-decoration:none; color:inherit;"><span style="color:var(--creamy-blue); font-weight:700;">Designed & Developed by Swapnil Shinde (TY EE-VLSI D&T) & associated by Rishikesh gavhane</span></a></p>
+        <p style="font-size:12px; font-family:var(--font-mono); color:var(--text-dim);">Electronics Engineering — VLSI Design &amp; Technology</p>
+    </div>
+</div>
+</footer>
+
+</div><!-- .site-wrapper -->
+
+<style>
+@keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+@media (max-width: 768px) {
+    .about-grid { grid-template-columns: 1fr !important; gap: 40px !important; }
+}
+</style>
+
+<!-- Scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+<script src="js/three-bg.js"></script>
+<script src="js/countdown.js"></script>
+<script src="js/scroll-fx.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-auth-compat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script src="js/emailjs-config.js"></script>
+<script src="js/firebase-config.js"></script>
+<script src="js/auth.js"></script>
+</body>
+</html>

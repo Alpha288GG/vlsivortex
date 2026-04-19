@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Dashboard — Tech Vortex</title>
+<link rel="stylesheet" href="css/design.css"/>
+<link rel="stylesheet" href="css/loader.css?v=1"/>
+<style>
+/* ── Dashboard Layout ── */
+.dash-container { max-width:960px; margin:0 auto; padding:20px; }
+
+/* Tabs */
+.dash-tabs { display:flex; gap:4px; background:rgba(255,255,255,0.04); border:1px solid var(--border); border-radius:var(--radius); padding:4px; margin-bottom:28px; overflow-x:auto; -webkit-overflow-scrolling:touch; }
+.dash-tab { flex:1; min-width:0; padding:12px 8px; text-align:center; font-size:12px; font-family:var(--font-mono); font-weight:600; letter-spacing:0.06em; text-transform:uppercase; color:var(--text-muted); background:transparent; border:none; border-radius:calc(var(--radius) - 4px); cursor:pointer; transition:all 0.25s ease; white-space:nowrap; }
+.dash-tab:hover { color:var(--text); background:rgba(255,255,255,0.04); }
+.dash-tab.active { color:var(--bg); background:var(--creamy-blue); }
+.dash-panel { display:none; animation:fadeUp 0.35s ease; }
+.dash-panel.active { display:block; }
+
+@keyframes fadeUp { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
+
+/* Profile Card */
+.profile-avatar { width:72px; height:72px; border-radius:50%; object-fit:cover; border:3px solid var(--creamy-blue); }
+.profile-avatar-placeholder { width:72px; height:72px; border-radius:50%; background:var(--creamy-blue); color:var(--bg); display:flex; align-items:center; justify-content:center; font-size:28px; font-weight:700; flex-shrink:0; }
+
+/* Coupon Card */
+.coupon-code { display:inline-flex; align-items:center; gap:12px; background:rgba(255,255,255,0.06); border:2px dashed var(--creamy-blue); border-radius:var(--radius); padding:16px 24px; font-family:var(--font-mono); font-size:1.8rem; font-weight:700; letter-spacing:0.3em; color:var(--creamy-blue); cursor:pointer; transition:all 0.2s ease; user-select:all; }
+.coupon-code:hover { background:rgba(184,212,232,0.1); transform:scale(1.02); }
+.coupon-code .copy-icon { font-size:16px; opacity:0.6; }
+
+/* Certificate */
+.cert-preview { width:100%; max-width:700px; margin:0 auto; border-radius:var(--radius); border:1px solid var(--border); overflow:hidden; }
+
+/* Status Pills */
+.pill { display:inline-block; padding:4px 10px; border-radius:var(--radius-pill); font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; }
+.pill-pending { background:rgba(255,193,7,0.12); color:#ffc107; border:1px solid rgba(255,193,7,0.3); }
+.pill-verified { background:rgba(40,167,69,0.12); color:#28a745; border:1px solid rgba(40,167,69,0.3); }
+
+/* Phone Modal */
+#phone-modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.8); backdrop-filter:blur(8px); z-index:10000; display:none; align-items:center; justify-content:center; padding:20px; }
+#phone-modal-overlay.show { display:flex; }
+
+/* Mobile responsive */
+@media(max-width:640px){
+    .dash-tabs { 
+        display: grid; 
+        grid-template-columns: 1fr 1fr; 
+        gap: 10px; 
+        padding: 0; 
+        background: transparent; 
+        border: none; 
+        overflow-x: visible; 
+    }
+    .dash-tab { 
+        flex: none; 
+        width: 100%; 
+        font-size: 11px; 
+        padding: 16px 8px; 
+        background: rgba(255,255,255,0.04); 
+        border: 1px solid var(--border); 
+        border-radius: 12px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+    }
+    .dash-tab.active {
+        background: var(--creamy-blue);
+        color: var(--bg);
+        border-color: var(--creamy-blue);
+    }
+    .coupon-code { font-size: 1.3rem; padding: 12px 16px; letter-spacing: 0.2em; }
+    .profile-header { flex-direction:column; text-align:center; }
+    .profile-grid { grid-template-columns: 1fr !important; }
+}
+
+/* Auth Overlay */
+#auth-overlay { position:fixed; inset:0; background:var(--bg); z-index:9999; display:flex; align-items:center; justify-content:center; padding:20px; }
+
+/* ── Custom Cert Name Dropdown ── */
+.cert-dropdown { position:relative; flex:1; min-width:200px; user-select:none; }
+.cert-dropdown-trigger {
+    display:flex; align-items:center; justify-content:space-between;
+    padding:12px 16px; border-radius:10px;
+    background:rgba(255,255,255,0.05);
+    border:1px solid rgba(184,212,232,0.25);
+    color:#fff; font-size:14px; cursor:pointer;
+    transition:border-color 0.2s, background 0.2s;
+    gap:10px;
+}
+.cert-dropdown-trigger:hover { background:rgba(255,255,255,0.08); border-color:rgba(184,212,232,0.5); }
+.cert-dropdown-trigger.open { border-color:var(--creamy-blue); background:rgba(184,212,232,0.08); }
+.cert-dropdown-trigger .cd-arrow {
+    width:18px; height:18px; flex-shrink:0;
+    transition:transform 0.25s ease;
+    opacity:0.7;
+}
+.cert-dropdown-trigger.open .cd-arrow { transform:rotate(180deg); }
+.cert-dropdown-trigger .cd-label { flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.cert-dropdown-trigger .cd-label.placeholder { color:rgba(255,255,255,0.35); }
+
+.cert-dropdown-menu {
+    position:fixed;
+    background:#111827;
+    border:1px solid rgba(184,212,232,0.2);
+    border-radius:10px;
+    overflow:hidden;
+    box-shadow:0 16px 40px rgba(0,0,0,0.7), 0 0 0 1px rgba(184,212,232,0.05);
+    z-index:99999;
+    max-height:220px; overflow-y:auto;
+    display:none;
+    animation:cdFadeIn 0.18s ease;
+}
+.cert-dropdown-menu.open { display:block; }
+@keyframes cdFadeIn { from{opacity:0;transform:translateY(-6px)} to{opacity:1;transform:translateY(0)} }
+.cert-dropdown-menu::-webkit-scrollbar { width:4px; }
+.cert-dropdown-menu::-webkit-scrollbar-track { background:transparent; }
+.cert-dropdown-menu::-webkit-scrollbar-thumb { background:rgba(184,212,232,0.2); border-radius:2px; }
+
+.cert-dropdown-option {
+    padding:11px 16px; font-size:14px; color:#e2e8f0;
+    cursor:pointer; display:flex; align-items:center; gap:10px;
+    transition:background 0.15s;
+    border-bottom:1px solid rgba(255,255,255,0.04);
+}
+.cert-dropdown-option:last-child { border-bottom:none; }
+.cert-dropdown-option:hover { background:rgba(184,212,232,0.1); color:#fff; }
+.cert-dropdown-option.selected { background:rgba(184,212,232,0.14); color:var(--creamy-blue); font-weight:600; }
+.cert-dropdown-option .cd-opt-icon { font-size:16px; flex-shrink:0; }
+</style>
+</head>
+<body>
+<canvas id="bg-canvas"></canvas>
+<div class="glow-bg"></div>
+
+<!-- Dashboard Loader Overlay -->
+<div id="dash-loader-overlay" class="loader-overlay">
+    <div class="loader-spinner"></div>
+    <div class="loader-text" id="dash-loader-text">Loading your dashboard...</div>
+</div>
+
+<!-- Auth Overlay (shown when not signed in) -->
+<div id="auth-overlay">
+    <div class="glass-card glass-card-lg" style="max-width:420px; text-align:center; width:100%;">
+        <div style="display:inline-flex; align-items:center; justify-content:center; width:56px; height:56px; background:var(--white); border-radius:50%; margin-bottom:24px; overflow:hidden;">
+            <img src="assets/images/college/logovortex.jpeg" alt="Logo" style="width:100%; height:100%; object-fit:cover;">
+        </div>
+        <h2 class="heading-md" style="margin-bottom:8px;">Welcome to Tech Vortex</h2>
+        <p style="color:var(--text-muted); font-size:14px; line-height:1.6; margin-bottom:32px;">Sign in with your Google account to access your dashboard, register for events, and manage your participation.</p>
+        <button onclick="signInWithGoogle()" class="btn btn-gold" style="width:100%; justify-content:center; padding:16px; font-size:14px; gap:10px;">
+            <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#34A853" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#FBBC05" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+            Sign in with Google
+        </button>
+        <p style="font-size:11px; color:var(--text-dim); margin-top:20px;">By signing in, you agree to our Terms of Service.</p>
+    </div>
+</div>
+
+<!-- Phone Number Modal -->
+<div id="phone-modal-overlay">
+    <div class="glass-card glass-card-lg" style="max-width:400px; text-align:center; width:100%;">
+        <div style="font-size:40px; margin-bottom:16px;">📱</div>
+        <h3 style="font-size:1.2rem; font-weight:700; margin-bottom:8px;">Mobile Number Required</h3>
+        <p style="color:var(--text-muted); font-size:13px; line-height:1.6; margin-bottom:24px;">Please enter your mobile number to continue. This is required for event coordination.</p>
+        <form onsubmit="savePhoneNumber(event)">
+            <input type="tel" id="phone-input" class="input" placeholder="+91 98765 43210" required style="margin-bottom:16px; text-align:center; font-size:16px; letter-spacing:0.1em;"/>
+            <button type="submit" class="btn btn-gold" style="width:100%; justify-content:center;">Save & Continue</button>
+        </form>
+    </div>
+</div>
+
+<div class="site-wrapper" id="dashboard-main" style="display:none;">
+
+<!-- NAV -->
+<nav class="nav" style="position:relative; transform:none; left:auto; margin: 20px auto; width: max-content; padding: 8px 16px;">
+    <a href="index.html" class="nav-brand" style="margin-right: 16px; padding-right: 16px; border-right: 1px solid var(--border);">
+        <div class="nav-brand-icon" style="width: 32px; height: 32px;"><img src="assets/images/college/logovortex.jpeg" alt="Logo" style="width:100%; height:100%; object-fit:cover;"></div>
+        <div class="nav-brand-text" style="display:flex; flex-direction:column; justify-content:center; gap:0;">
+            <span class="nav-brand-title" style="font-size: 13px; line-height: 1.2; white-space: nowrap;">My Dashboard</span>
+            <span class="nav-brand-sub" id="nav-user-name" style="font-size: 8px; line-height: 1.2; white-space: nowrap; opacity: 0.6;">Loading...</span>
+        </div>
+    </a>
+    <div class="nav-cta" style="display:flex; gap:8px; align-items:center;">
+        <a href="index.html" class="btn btn-outline" style="padding: 6px 14px; font-size: 10px; height: auto;">← Home</a>
+        <button onclick="signOutUser()" class="btn btn-ghost" style="padding: 6px 10px; font-size: 10px; height: auto; opacity: 0.8;">Sign Out</button>
+    </div>
+</nav>
+
+<section style="padding-top:100px; padding-bottom:60px;">
+<div class="dash-container">
+
+    <!-- Welcome Header -->
+    <div style="margin-bottom:32px;">
+        <div style="display:flex; align-items:center; gap:16px; flex-wrap:wrap; margin-bottom:16px;" class="profile-header">
+            <img id="user-avatar" class="profile-avatar" src="" alt="" style="display:none;">
+            <div id="user-avatar-placeholder" class="profile-avatar-placeholder"></div>
+            <div>
+                <h1 style="font-size:1.6rem; font-weight:700; margin-bottom:4px;" id="welcome-name">Welcome!</h1>
+                <p style="color:var(--text-muted); font-size:13px; font-family:var(--font-mono);" id="welcome-email"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tab Navigation -->
+    <div class="dash-tabs" role="tablist">
+        <button class="dash-tab active" onclick="switchTab('profile')" role="tab">👤 Profile</button>
+        <button class="dash-tab" onclick="switchTab('events')" role="tab">🎯 My Events</button>
+        <button class="dash-tab" onclick="switchTab('coordinators')" role="tab">📞 Co-ordinators</button>
+        <button class="dash-tab" onclick="switchTab('certificate')" role="tab">📜 Certificate</button>
+    </div>
+
+    <!-- ═══ TAB 1: PROFILE ═══ -->
+    <div class="dash-panel active" id="panel-profile">
+        <div class="glass-card glass-card-lg">
+            <h3 style="font-size:16px; font-weight:600; margin-bottom:24px; padding-bottom:16px; border-bottom:1px solid var(--border);">Your Information</h3>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;" class="profile-grid">
+                <div>
+                    <div style="font-size:11px; font-family:var(--font-mono); color:var(--text-dim); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:6px;">Full Name</div>
+                    <div style="font-size:15px; font-weight:600;" id="prof-name">—</div>
+                </div>
+                <div>
+                    <div style="font-size:11px; font-family:var(--font-mono); color:var(--text-dim); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:6px;">Email</div>
+                    <div style="font-size:15px; font-weight:600;" id="prof-email">—</div>
+                </div>
+                <div>
+                    <div style="font-size:11px; font-family:var(--font-mono); color:var(--text-dim); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:6px;">Mobile</div>
+                    <div style="font-size:15px; font-weight:600;" id="prof-phone">—</div>
+                </div>
+                <div>
+                    <div style="font-size:11px; font-family:var(--font-mono); color:var(--text-dim); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:6px;">Member Since</div>
+                    <div style="font-size:15px; font-weight:600;" id="prof-joined">—</div>
+                </div>
+            </div>
+
+            <div style="margin-top:24px; padding-top:16px; border-top:1px solid var(--border);">
+                <div style="font-size:11px; font-family:var(--font-mono); color:var(--text-dim); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:8px;">📌 Event Venue</div>
+                <div style="font-size:14px; color:var(--text-muted); line-height:1.6;">
+                    <strong style="color:var(--text);">CSMSS College of Engineering</strong><br>
+                    Kanchanwadi, Chh. Sambhajinagar<br>
+                    <span style="color:var(--creamy-blue); display:inline-block; margin-top:4px;">🏢 Department of Electronics Engineering [VLSI (D&T)]</span>
+                </div>
+            </div>
+        </div>
+        <div style="margin-top:16px;">
+            <a href="registration.html" class="btn btn-gold" style="width:100%; justify-content:center; padding:16px; font-size:14px;">Register for an Event →</a>
+        </div>
+    </div>
+
+    <!-- ═══ TAB 2: MY EVENTS ═══ -->
+    <div class="dash-panel" id="panel-events">
+        <div id="events-list">
+            <div class="glass-card" style="text-align:center; padding:48px 20px;">
+                <div style="font-size:40px; margin-bottom:16px;">🔍</div>
+                <p style="color:var(--text-muted); font-size:14px;">Loading your registrations...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ TAB 3: CO-ORDINATORS ═══ -->
+    <div class="dash-panel" id="panel-coordinators">
+        <div id="coordinators-list">
+            <div class="glass-card" style="text-align:center; padding:48px 20px;">
+                <div style="font-size:40px; margin-bottom:16px;">📞</div>
+                <p style="color:var(--text-muted); font-size:14px;">Loading co-ordinator details...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ TAB 4: CERTIFICATE ═══ -->
+    <div class="dash-panel" id="panel-certificate">
+        <div class="glass-card glass-card-lg">
+            <h3 style="font-size:16px; font-weight:600; margin-bottom:8px;">🎓 Get Your Certificate</h3>
+            
+            <div id="cert-locked-msg" style="display:none; text-align:center; padding:30px 10px; background:rgba(255,255,255,0.02); border:1px dashed rgba(255,255,255,0.1); border-radius:var(--radius-sm); margin-top:20px;">
+                <div style="font-size:32px; margin-bottom:12px;">🔒</div>
+                <h4 style="font-size:14px; font-weight:600; color:var(--text-muted); margin-bottom:8px;">Certificate Locked</h4>
+                <p style="font-size:13px; color:var(--text-dim); line-height:1.5;">Your participation certificate will be unlocked automatically after your registration payment is verified by an admin.</p>
+            </div>
+
+            <div id="cert-generator-ui" style="display:none;">
+                <p style="color:var(--text-muted); font-size:13px; margin-bottom:16px; line-height:1.6; margin-top:10px;">
+                    Select your name from the dropdown below. Only names registered in your team are available — this ensures certificate authenticity.
+                </p>
+                <!-- Custom dark dropdown for cert name -->
+                <div style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:8px; align-items:flex-start;">
+
+                    <!-- Custom Dropdown -->
+                    <div class="cert-dropdown" id="cert-dropdown">
+                        <div class="cert-dropdown-trigger" id="cert-dropdown-trigger" onclick="toggleCertDropdown()">
+                            <span class="cd-label placeholder" id="cert-dropdown-label">⬇ Select your name…</span>
+                            <svg class="cd-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="6 9 12 15 18 9"/>
+                            </svg>
+                        </div>
+                        <div class="cert-dropdown-menu" id="cert-dropdown-menu">
+                            <!-- Options injected by populateCertNameDropdown() -->
+                        </div>
+                    </div>
+
+                    <button onclick="generateCertificate()" class="btn btn-gold" style="white-space:nowrap; padding:13px 20px; flex-shrink:0;">
+                        🎓 Generate Certificate
+                    </button>
+                </div>
+                <p id="cert-name-hint" style="font-size:11px; color:var(--text-dim); margin:0 0 20px 2px; line-height:1.5;">
+                    🔒 Only names from your registered team are listed here.
+                </p>
+            </div>
+
+            <div id="cert-output" style="display:none; margin-top:32px; padding-top:32px; border-top:1px solid rgba(255,255,255,0.1);">
+                <canvas id="cert-canvas" class="cert-preview"></canvas>
+                <div style="margin-top:16px; text-align:center;">
+                    <button onclick="downloadCertificate()" class="btn btn-outline" style="gap:8px;">⬇ Download Certificate</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</section>
+
+<!-- Footer -->
+<footer class="footer"><div class="container"><p style="font-size:12px; font-family:var(--font-mono); color:var(--text-dim); text-align:center;">© 2026 Tech Vortex · VLSI Design & Technology · <a href="admin.html" style="text-decoration:none; color:inherit;">Admin</a><br><a href="https://sscodehub.in" target="_blank" style="text-decoration:none; color:inherit;"><span style="color:var(--creamy-blue); font-weight:700;">Designed & Developed by Swapnil Shinde</span></a></p></div></footer>
+
+</div><!-- .site-wrapper -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+<script src="js/three-bg.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-auth-compat.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script src="js/emailjs-config.js"></script>
+<script src="js/firebase-config.js?v=2"></script>
+<script src="js/auth.js?v=3"></script>
+<script src="js/dashboard.js?v=5"></script>
+</body></html>
