@@ -317,11 +317,6 @@ function toggleCertDropdown() {
         menu.classList.remove('open');
         trigger.classList.remove('open');
     } else {
-        // Position fixed relative to trigger's viewport rect
-        const rect = trigger.getBoundingClientRect();
-        menu.style.top    = (rect.bottom + 6) + 'px';
-        menu.style.left   = rect.left + 'px';
-        menu.style.width  = rect.width + 'px';
         menu.classList.add('open');
         trigger.classList.add('open');
     }
@@ -362,45 +357,31 @@ async function populateCertNameDropdown() {
     if (!menu) return;
     const label = document.getElementById('cert-dropdown-label');
 
-    console.log("[CertDebug] Starting name fetch...");
-
     if (label) { label.textContent = 'Loading names...'; label.classList.add('placeholder'); }
     menu.innerHTML = '<div class="cert-dropdown-option" style="color:rgba(255,255,255,0.4);cursor:default;pointer-events:none;">Loading...</div>';
 
     const user = auth.currentUser;
     if (!user) {
-        console.warn("[CertDebug] No current user found in auth.");
         menu.innerHTML = '<div class="cert-dropdown-option" style="color:#ff6b6b;cursor:default;pointer-events:none;">Sign-in required</div>';
         return;
     }
-
-    console.log("[CertDebug] fetching for UID:", user.uid);
 
     const names = new Set();
     const eventIds = ['coding', 'genai', 'circuit', 'poster'];
     try {
         for (var i = 0; i < eventIds.length; i++) {
-            const collName = 'registrations_' + eventIds[i];
-            var snap = await db.collection(collName).where('uid', '==', user.uid).get();
-            console.log(`[CertDebug] Collection ${collName} returned ${snap.size} docs`);
-            
+            var snap = await db.collection('registrations_' + eventIds[i]).where('uid', '==', user.uid).get();
             snap.forEach(function(doc) {
                 var d = doc.data();
-                console.log(`[CertDebug] Found doc in ${collName}:`, d.leaderName);
                 if (d.leaderName && d.leaderName.trim()) names.add(d.leaderName.trim());
                 if (Array.isArray(d.teamMembers)) {
-                    d.teamMembers.forEach(function(m) { 
-                        if (m && m.trim()) {
-                            console.log("  - added member:", m);
-                            names.add(m.trim()); 
-                        }
-                    });
+                    d.teamMembers.forEach(function(m) { if (m && m.trim()) names.add(m.trim()); });
                 }
             });
         }
     } catch (err) {
-        console.error('[CertDebug] Firestore error:', err);
-        menu.innerHTML = '<div class="cert-dropdown-option" style="color:#ff6b6b;cursor:default;pointer-events:none;">Error — please reload</div>';
+        console.error('Cert fetch error:', err);
+        menu.innerHTML = '<div class="cert-dropdown-option" style="color:#ff6b6b;cursor:default;pointer-errors:none;">Error loading data</div>';
         return;
     }
 
@@ -409,12 +390,10 @@ async function populateCertNameDropdown() {
     if (label) { label.textContent = 'Select your name...'; label.classList.add('placeholder'); }
 
     if (names.size === 0) {
-        console.warn("[CertDebug] No names found for this UID across all collections.");
         menu.innerHTML = '<div class="cert-dropdown-option" style="color:rgba(255,255,255,0.35);cursor:default;pointer-events:none;">No registration found</div>';
         return;
     }
 
-    console.log("[CertDebug] Success! Populating with:", Array.from(names));
     window._certAllowedNames = new Set(Array.from(names).map(function(n) { return n.toLowerCase(); }));
 
     Array.from(names).sort().forEach(function(name) {

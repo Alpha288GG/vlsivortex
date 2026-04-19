@@ -100,19 +100,21 @@
 .cert-dropdown-trigger .cd-label.placeholder { color:rgba(255,255,255,0.35); }
 
 .cert-dropdown-menu {
-    position:fixed;
-    background:#111827;
-    border:1px solid rgba(184,212,232,0.2);
+    position:absolute;
+    top:calc(100% + 6px);
+    left:0;
+    width:100%;
+    background:#1a2233;
+    border:1px solid var(--creamy-blue);
     border-radius:10px;
     overflow:hidden;
-    box-shadow:0 16px 40px rgba(0,0,0,0.7), 0 0 0 1px rgba(184,212,232,0.05);
-    z-index:99999;
+    box-shadow:0 16px 40px rgba(0,0,0,0.8);
+    z-index:9999;
     max-height:220px; overflow-y:auto;
     display:none;
-    animation:cdFadeIn 0.18s ease;
 }
 .cert-dropdown-menu.open { display:block; }
-@keyframes cdFadeIn { from{opacity:0;transform:translateY(-6px)} to{opacity:1;transform:translateY(0)} }
+@keyframes cdFadeIn { from{opacity:0} to{opacity:1} }
 .cert-dropdown-menu::-webkit-scrollbar { width:4px; }
 .cert-dropdown-menu::-webkit-scrollbar-track { background:transparent; }
 .cert-dropdown-menu::-webkit-scrollbar-thumb { background:rgba(184,212,232,0.2); border-radius:2px; }
