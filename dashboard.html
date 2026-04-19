@@ -101,34 +101,32 @@
 
 .cert-dropdown-menu {
     position:absolute;
-    top:calc(100% + 6px);
+    top:calc(100% + 8px);
     left:0;
     width:100%;
+    min-width:280px;
     background:#1a2233;
     border:1px solid var(--creamy-blue);
-    border-radius:10px;
+    border-radius:12px;
     overflow:hidden;
-    box-shadow:0 16px 40px rgba(0,0,0,0.8);
+    box-shadow:0 20px 50px rgba(0,0,0,0.9);
     z-index:9999;
-    max-height:220px; overflow-y:auto;
+    max-height:300px; overflow-y:auto;
     display:none;
 }
-.cert-dropdown-menu.open { display:block; }
-@keyframes cdFadeIn { from{opacity:0} to{opacity:1} }
-.cert-dropdown-menu::-webkit-scrollbar { width:4px; }
-.cert-dropdown-menu::-webkit-scrollbar-track { background:transparent; }
-.cert-dropdown-menu::-webkit-scrollbar-thumb { background:rgba(184,212,232,0.2); border-radius:2px; }
+.cert-dropdown-menu.open { display:block; animation:cdFadeIn 0.2s ease-out; }
+@keyframes cdFadeIn { from{opacity:0;transform:translateY(-10px)} to{opacity:1;transform:translateY(0)} }
 
 .cert-dropdown-option {
-    padding:11px 16px; font-size:14px; color:#e2e8f0;
-    cursor:pointer; display:flex; align-items:center; gap:10px;
-    transition:background 0.15s;
-    border-bottom:1px solid rgba(255,255,255,0.04);
+    padding:14px 20px; font-size:15px; color:#e2e8f0;
+    cursor:pointer; display:flex; align-items:center; gap:12px;
+    transition:background 0.2s;
+    border-bottom:1px solid rgba(255,255,255,0.05);
 }
 .cert-dropdown-option:last-child { border-bottom:none; }
-.cert-dropdown-option:hover { background:rgba(184,212,232,0.1); color:#fff; }
-.cert-dropdown-option.selected { background:rgba(184,212,232,0.14); color:var(--creamy-blue); font-weight:600; }
-.cert-dropdown-option .cd-opt-icon { font-size:16px; flex-shrink:0; }
+.cert-dropdown-option:hover { background:rgba(184,212,232,0.15); color:#fff; }
+.cert-dropdown-option.selected { background:rgba(184,212,232,0.2); color:var(--creamy-blue); font-weight:600; }
+.cert-dropdown-option .cd-opt-icon { font-size:18px; flex-shrink:0; }
 </style>
 </head>
 <body>
@@ -269,7 +267,7 @@
 
     <!-- ═══ TAB 4: CERTIFICATE ═══ -->
     <div class="dash-panel" id="panel-certificate">
-        <div class="glass-card glass-card-lg">
+        <div class="glass-card glass-card-lg" style="overflow:visible;">
             <h3 style="font-size:16px; font-weight:600; margin-bottom:8px;">🎓 Get Your Certificate</h3>
             
             <div id="cert-locked-msg" style="display:none; text-align:center; padding:30px 10px; background:rgba(255,255,255,0.02); border:1px dashed rgba(255,255,255,0.1); border-radius:var(--radius-sm); margin-top:20px;">
